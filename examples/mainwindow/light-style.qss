@@ -160,7 +160,7 @@ MainWindow[custom-style=true] {
     background-color: transparent;
 }
 
-QWidget#clock-widget {
+QWidget#clockWidget {
     font-size: 75px;
     color: #333333;
     font-weight: bold;

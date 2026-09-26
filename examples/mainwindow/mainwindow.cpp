@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
@@ -29,42 +30,17 @@
 #include <widgetframe/windowbar.h>
 #include <widgetframe/windowbutton.h>
 
-class ClockWidget : public QLabel {
-public:
-    explicit ClockWidget(QWidget *parent = nullptr) : QLabel(parent) {
-        startTimer(100);
-        setAlignment(Qt::AlignCenter);
-    }
-
-    ~ClockWidget() override = default;
-
-protected:
-    void timerEvent(QTimerEvent *event) override {
-        QLabel::timerEvent(event);
-        setText(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
-    }
-};
-
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     setAttribute(Qt::WA_DontCreateNativeAncestors);
+
+    ui->setupUi(this);
 
     installWindowAgent();
 
-#if 1
-    auto clockWidget = new ClockWidget();
-    clockWidget->setObjectName(QStringLiteral("clock-widget"));
-    clockWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    setCentralWidget(clockWidget);
-#else
-    auto webView = new QWebEngineView();
-    webView->load(QUrl("https://www.baidu.com"));
-    setCentralWidget(webView);
-#endif
+    // Update the clock label defined in mainwindow.ui
+    startTimer(100);
 
     loadStyleSheet(Dark);
-
-    setWindowTitle(tr("Example MainWindow"));
-    resize(800, 600);
 
     // setFixedHeight(600);
     // windowAgent->centralize();
@@ -106,7 +82,14 @@ static inline void emulateLeaveEvent(QWidget *widget) {
     });
 }
 
-MainWindow::~MainWindow() = default;
+MainWindow::~MainWindow() {
+    delete ui;
+}
+
+void MainWindow::timerEvent(QTimerEvent *event) {
+    QMainWindow::timerEvent(event);
+    ui->clockWidget->setText(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
+}
 
 bool MainWindow::event(QEvent *event) {
     switch (event->type()) {

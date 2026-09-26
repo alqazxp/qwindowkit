@@ -7,6 +7,12 @@
 
 #include <QtWidgets/QMainWindow>
 
+QT_BEGIN_NAMESPACE
+namespace Ui {
+    class MainWindow;
+}
+QT_END_NAMESPACE
+
 namespace QWK {
     class WidgetWindowAgent;
     class StyleAgent;
@@ -29,12 +35,15 @@ Q_SIGNALS:
 
 protected:
     bool event(QEvent *event) override;
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     void installWindowAgent();
     void loadStyleSheet(Theme theme);
 
     Theme currentTheme{};
+
+    Ui::MainWindow *ui;
 
     QWK::WidgetWindowAgent *windowAgent;
 };
