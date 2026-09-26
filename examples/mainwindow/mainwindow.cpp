@@ -17,6 +17,8 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QColorDialog>
+
+#include <KPasswordDialog>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #  include <QtGui/QActionGroup>
 #else
@@ -26,7 +28,13 @@
 // #include <QtWebEngineWidgets/QWebEngineView>
 
 #include <QWKWidgets/widgetwindowagent.h>
-
+#include <KPixmapRegionSelectorDialog>
+#include <KPageDialog>
+#include <KMessageDialog>
+#include <KFontChooserDialog>
+#include <KAssistantDialog>
+#include <KMimeTypeChooserDialog>
+#include <KNewPasswordDialog>
 #include <widgetframe/windowbar.h>
 #include <widgetframe/windowbutton.h>
 
@@ -40,10 +48,54 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // Update the clock label defined in mainwindow.ui
     startTimer(100);
 
+    QObject::connect(ui->pushButton, &QPushButton::clicked, [this]() {
+        
+        KPasswordDialog dlg(this);
+        dlg.exec();
+    });
+
+    QObject::connect(ui->pushButton_2, &QPushButton::clicked, [this]() {
+        KPageDialog dlg(this);
+        dlg.exec();
+    });
+
+    QObject::connect(ui->pushButton_3, &QPushButton::clicked, [this]() {
+        KPixmapRegionSelectorDialog dlg(this);
+        dlg.exec();
+    });
+
+    QObject::connect(ui->pushButton_4, &QPushButton::clicked, [this]() { 
+        KFontChooserDialog dlg(KFontChooser::DisplayFrame, this);
+        dlg.exec();
+    });
+
+    QObject::connect(ui->pushButton_5, &QPushButton::clicked, [this]() {
+        KMessageDialog dlg(KMessageDialog::QuestionTwoActionsCancel, "helloheheheheheheheheheh", this);
+        dlg.setWindowTitle("hello,world");
+        dlg.setMinimumSize(400, 200);
+        dlg.exec();
+    });
+    QObject::connect(ui->pushButton_6, &QPushButton::clicked, [this]() {
+        KAssistantDialog dlg(this);
+        dlg.exec();
+    });
+    QObject::connect(ui->pushButton_7, &QPushButton::clicked, [this]() {
+        KNewPasswordDialog dlg(this);
+        dlg.setPrompt("next one");
+        dlg.setWindowTitle("aaaaa");
+        dlg.exec();
+    });
+    QObject::connect(ui->pushButton_8, &QPushButton::clicked, [this]() {
+        KMimeTypeChooserDialog dlg("title", "text", {"hello", "next"}, "default", this);
+        dlg.exec();
+    });
+
     loadStyleSheet(Dark);
 
     // setFixedHeight(600);
     // windowAgent->centralize();
+
+
 }
 
 static inline void emulateLeaveEvent(QWidget *widget) {

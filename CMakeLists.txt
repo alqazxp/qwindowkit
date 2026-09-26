@@ -7,6 +7,15 @@ project(QWindowKit
     DESCRIPTION "Cross-platform window customization framework"
 )
 
+include(FeatureSummary)
+find_package(ECM 6.30.0  NO_MODULE)
+set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://commits.kde.org/extra-cmake-modules")
+feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+# add own modules to search path, too
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+
 # ----------------------------------
 # Build Options
 # ----------------------------------
@@ -82,6 +91,8 @@ if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND NOT CMAKE_CROSSCOMPILING)
     set(CMAKE_INSTALL_RPATH "\$ORIGIN:\$ORIGIN/../lib")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH OFF)
 endif()
+
+
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
