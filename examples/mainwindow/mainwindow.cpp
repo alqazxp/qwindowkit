@@ -35,6 +35,8 @@
 #include <KAssistantDialog>
 #include <KMimeTypeChooserDialog>
 #include <KNewPasswordDialog>
+#include <KAboutApplicationDialog>
+#include <KAboutData>
 #include <widgetframe/windowbar.h>
 #include <widgetframe/windowbutton.h>
 
@@ -76,7 +78,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         dlg.exec();
     });
     QObject::connect(ui->pushButton_6, &QPushButton::clicked, [this]() {
-        KAssistantDialog dlg(this);
+        KAboutData aboutData;
+        KAboutApplicationDialog dlg(aboutData, this);
         dlg.exec();
     });
     QObject::connect(ui->pushButton_7, &QPushButton::clicked, [this]() {
